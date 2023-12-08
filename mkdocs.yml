@@ -1,0 +1,27 @@
+site_name: GoPro DataFlow
+nav:
+  - Home: index.md
+  - Documentation:
+    - core: core.md
+    - geometry: geometry.md
+    - export: export.md
+theme:
+  name: material
+plugins:
+- search
+- mkdocstrings:
+    default_handler: python
+    handlers:
+      python:
+        paths: [src]
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - attr_list
+  - md_in_html
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
