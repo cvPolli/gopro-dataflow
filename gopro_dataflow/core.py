@@ -318,25 +318,6 @@ def _adjustFrameIdx(last_idx, data_cam):
             item['frameIdx'] += last_idx   
 
 
-def _filter_gnss_by_precision(data:dict, dop_limit:float):             
-    outliers = []
-    filter_data = copy.deepcopy(data)
-    for tsmp, gnss_data in data['gnss'].items():
-        # filter GNSS by DOP and FIX            
-        if gnss_data['DOP'] > dop_limit or not gnss_data['fix']:
-            warning_message = (
-                f"Timestamp[{tsmp}] has DOP ({gnss_data['DOP']}) greater than the specified limit ({dop_limit}). "
-                if gnss_data['DOP'] > dop_limit else ""
-            ) + (
-                f"Timestamp [{tsmp}] measure was not fixed. " if not gnss_data['fix'] else ""
-            )
-            if warning_message:
-                LOGGER.warning(warning_message + f"{len(filter_data['gnss'])} GNSS measurements have been removed!")
-
-            for key in (data['gnss'].keys()):
-                outliers.append({**filter_data['gnss'].pop(key),'tsmp': key, 'dop_filter': True, 'dist_filter': False})
-
-    return filter_data, outliers
 
 def _getDirname(path):
     return os.path.dirname(path) if path.lower().endswith('mp4') else path
@@ -398,6 +379,29 @@ def _checkAliasMap(aliasMap: dict)->dict:
     return aliasMap
 
 #external methods 
+def filter_gnss_by_precision(data:dict, dop_limit:float=5):             
+    outliers = copy.deepcopy(data)
+    outliers['gnss'] = {}
+    filter_data = copy.deepcopy(data)
+    for tsmp, gnss_data in data['gnss'].items():
+        # filter GNSS by DOP and FIX            
+        if gnss_data['DOP'] > dop_limit or not gnss_data['fix']:
+            # warning_message = (
+            #     f"Timestamp[{tsmp}] has DOP ({gnss_data['DOP']}) greater than the specified limit ({dop_limit}). "
+            #     if gnss_data['DOP'] > dop_limit else ""
+            # ) + (
+            #     f"\nTimestamp [{tsmp}] measure was not fixed. " if not gnss_data['fix'] else ""
+            # )    
+            LOGGER.warning(f"Timestamp[{tsmp}] | DOP ({gnss_data['DOP']}) | FIX: {gnss_data['fix']}")        
+
+            
+            outlier_data = {**filter_data['gnss'].pop(tsmp),'dop_filter': False, 'dist_filter': True}
+            outliers['gnss'][tsmp] = outlier_data
+            
+    if len(outliers):
+        LOGGER.warning(f"{len(outliers)} GNSS measurements have been removed!")
+    return filter_data, outliers
+
 # #TODO: create a docstring 
 def verifyGnssGaps(data_interp,dist_limit, aliasMap = {},_raise=True):
     
@@ -567,7 +571,7 @@ def interpDataBy(data:dict,sens_freq:str, imu:bool= False, aliasMap:dict = {})->
 
 
 #TODO: create a docstring and move this function to common.py
-def listVideos(path):
+def list_videos(path):
     videos = []        
     if path.endswith('.MP4'): 
         videos.append({
@@ -780,7 +784,7 @@ if __name__ == '__main__':
     last_meas_limit = args['opt'].pop('last_meas_limit')
 
     start_time = time.time()
-    videos = listVideos(args.pop('video')) 
+    videos = list_videos(args.pop('video')) 
     opt =  args['opt']     
 
     buffer_dst = 40  

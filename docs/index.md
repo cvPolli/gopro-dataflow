@@ -39,7 +39,7 @@ buffer = 40
 # Line reference to perform gdflow.filter_gnns_by(method ='location')  
 line = gpd.read_file("path/to/shapefile.shp", engine="pyogrio") #shapeFilePath ex: "shape/icm.shp"
 
-videos = gdflow.listVideos("../example_folder/")    
+videos = gdflow.list_videos("../example_folder/")    
     for v in videos:
         print(f"Processing {v['videoName']}")
 
