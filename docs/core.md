@@ -1,8 +1,8 @@
 ## **raw_extract()**
 :::gopro_dataflow.core.raw_extract
 
-## **filter_gnns_by()**
-:::gopro_dataflow.core.filter_gnns_by
+## **filter_gnss_by_precision()**
+:::gopro_dataflow.core.filter_gnss_by_precision
 
 ## **interpDataBy()**
 :::gopro_dataflow.core.interpDataBy
