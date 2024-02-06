@@ -8,8 +8,8 @@ try:
                                     raw_extract,                                 
                                     interpDataBy,
                                     data2Points,
-                                    listVideos,
-                                    filter_gnns_by,
+                                    list_videos,                                    
+                                    filter_gnss_by_precision,
                                     merge_raw_data,
                                     adjust_outliers,
                                     verifyQualityPercentage
@@ -22,12 +22,14 @@ try:
                                             gpd_buffer,
                                             gnss_data_to_gdf,
                                             gdf_to_gnss_data,
-                                            cross_validation
+                                            cross_validation,
+                                            data2gdf
                                     )
     from gopro_dataflow.utils.export import (data2csv)
 
     from gopro_dataflow.utils.map import(plot_gdfs_on_map,get_color,plot_data,FeatureLayer)
 
+    from gopro_dataflow.utils.frames import (export_frame_at_distance)
     
 
 except:
@@ -36,8 +38,8 @@ except:
                                     raw_extract,                                 
                                     interpDataBy,
                                     data2Points,
-                                    listVideos,
-                                    filter_gnns_by,
+                                    list_videos,
+                                    filter_gnss_by_precision,
                                     merge_raw_data,
                                     adjust_outliers,
                                     verifyQualityPercentage
@@ -57,3 +59,4 @@ except:
     from ..gopro_dataflow.utils.export import (data2csv)
 
     from ..gopro_dataflow.utils.map import(plot_gdfs_on_map,get_color,plot_data,FeatureLayer)
+    from ..gopro_dataflow.utils.frames import (export_frame_at_distance)

@@ -149,7 +149,7 @@ last_meas_limit = 10
 # Limit distance in meters, after GNSS interpolating, to aceptc GNSS failures along video. DOP limit influences on failures length.
 dist_w0_gnss = 50 
 
-videos = gdflow.listVideos("../example_folder/")    
+videos = gdflow.list_videos("../example_folder/")    
     for v in videos:
         print(f"Processing {v['videoName']}")
 
